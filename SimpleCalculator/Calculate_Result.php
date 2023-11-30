@@ -3,7 +3,7 @@
 <head>
     <title>Basic Calculator - Result</title>
 
-    <?php
+<?php
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
@@ -33,16 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $result = "Error: Division by zero!";
         }
         $symbol = "/";
-    } else {
+    } else {`
         $result = "Invalid operation";
     }
 
     echo "Result: $num1 $symbol $num2 = $result";
 }
-</head>
-<body>
-    
+
 
 ?>
-</body>
-</html>
