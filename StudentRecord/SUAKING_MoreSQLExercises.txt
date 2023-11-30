@@ -1,0 +1,89 @@
+//StudentRecord Terminal Commands
+
+mysql -u root
+
+CREATE DATABASE StudentRecord
+
+show databases;
+
+USE StudentRecord;
+
+// Creating Tables
+CREATE TABLE Student (
+    StudentID int NOT NULL PRIMARY KEY,
+    FirstName varchar(255),
+    LastName varchar(255),
+    DateOfBirth date,
+    Email varchar(255),
+    Phone varchar(255)
+);
+
+
+CREATE TABLE Course (
+    CourseID int NOT NULL PRIMARY KEY,
+    CourseName varchar(255),
+    Credits varchar(255),
+    InstructorID int,
+    FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID)
+);
+
+
+
+CREATE TABLE Instructor (
+    InstructorID int NOT NULL PRIMARY KEY,
+    FirstName varchar(255),
+    LastName varchar(255),
+    Email varchar(255),
+    Phone varchar(255)
+);
+
+
+CREATE TABLE Enrollment (
+    EnrollmentID int NOT NULL PRIMARY KEY,
+    StudentID int,
+    CourseID int,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID),
+    EnrollmentDate date,
+    Grade varchar(255)
+);
+
+// INSERT DATA
+INSERT INTO Student(StudentID, FirstName, LastName, DateOfBirth, Email, Phone)
+VALUES(123456789, 'John', 'Doe', '2001-01-01', 'johndoe@gmail.com', '+63 9876 54321');
+
+// CHECK
+SELECT * FROM STUDENT;
+
+INSERT INTO Course(CourseID, CourseName, InstructorID, Credits)
+VALUES(001, 'Introduction to Programming', 987654321 ,3);
+
+SELECT * FROM Course;
+
+INSERT INTO Instructor(InstructorID, FirstName, LastName, Email, Phone)
+VALUES(987654321, 'Bur', 'Nok', 'burnok@gmail.com', '+63 91212112');
+
+SELECT * FROM Instructor;
+
+
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate, Grade)
+VALUES(991, 123456789, 001, '2023-01-15', 'A');
+
+// All above are one to many relationship of student, course, and enrollment
+
+// one to many, instruc and course
+CREATE TABLE InstructorCourse (
+    InstructorID int,
+    CourseID int,
+    PRIMARY KEY (InstructorID, CourseID),
+    FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+);
+
+INSERT INTO InstructorCourse(InstructorID, CourseID)
+VALUES(987654321, 001);
+
+
+
+
+
