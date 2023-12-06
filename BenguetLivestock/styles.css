@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+}
+
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+li {
+    list-style: none;
+}
+
+/* Layout skeleton */
+
+.wrapper {
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    background: fixed;
+    max-width: 264px;
+    min-width: 264px;
+    transition: all 0.35s ease-in-out;
+    box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.1);
+    z-index: 1111;
+
+}
+
+.fa-solid,
+.fa-brands {
+    margin-right: 8px; /* Adjust the margin between icon and text as needed */
+}
+
+/* Sidebar collapse */
+
+#sidebar.collapsed {
+    margin-left: -264px;
+}
+
+.main {
+    background-color: #f2f4f8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+}
+
+.sidebar-logo {
+    padding: 1.15rem 1.5rem;
+}
+
+.sidebar-logo a {
+    color: #000;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.sidebar-nav {
+    padding: 0;
+}
+
+.sidebar-header {
+    color: #000;
+    font-size: 2rem;
+    padding: 1.5rem 1.5rem .375rem;
+}
+
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: #000;
+    position: relative;
+    display: flex;
+    font-size: 0.9rem;
+    align-items: center;
+}
+
+
+.sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+#population > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+#farms > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+#fish > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+#bee > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+#health > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+#veterinary > .sidebar-item > .sidebar-link {
+    font-size: 0.8rem;
+}
+
+.sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+
+.modal-backdrop.show {
+    opacity: var(--bs-backdrop-opacity);
+}
+
+
+
+a.sidebar-link.active {
+    background-color: #f1f3f4;
+    /* Change this to your desired background color */
+    color: #000;
+    /* Change this to your desired text color */
+}
+
+/* Optionally, you can add a hover effect for better user experience */
+a.sidebar-link:hover {
+    background-color: #f1f3f4;
+    /* Change this to your desired hover background color */
+    color: #000;
+    /* Change this to your desired hover text color */
+}
+
+body.modal-open a.sidebar-link.active,
+body.modal-open a.sidebar-link:hover {
+    background-color: initial;
+    color: initial;
+}
+
+.content {
+    flex: 1;
+    max-width: 100vw;
+    width: 100vw;
+}
+
+/* Responsive */
+
+@media (min-width:768px) {
+    .content {
+        width: auto;
+    }
+}
+
+
