@@ -91,7 +91,7 @@
                         <label for="update_type">Type</label>
                         <input type="text" class="form-control" id="update_type" readonly>
                     </div>
-                                
+
                     <div class="form-group mb-3">
                         <label for="update_count">Count</label>
                         <input type="number" class="form-control" name="update_count" id="update_count">
@@ -117,7 +117,7 @@
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
-    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -136,3 +136,143 @@
         </div>
     </div>
 </div>
+
+<!-- Advanced Options -->
+<div class="modal" id="advancedOptionModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Advanced Options</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="container"></div>
+            <div class="modal-body">
+                <table class="display table-bordered" id="advanced-table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Count</th>
+                            <th scope="col">Date Updated</th>
+                            <th class="text-center" scope="col">Update</th>
+                            <th class="text-center" scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $totalCount = 0;
+                        $connection = mysqli_connect("localhost", "root", "", "benguetlivestockdb");
+
+                        $fetch_query = "SELECT poultrypopulation.poultry_type_id, poultrytype.poultry_type_name, poultrypopulation.date_updated, poultrypopulation.count
+                        FROM poultrypopulation
+                        JOIN poultrytype ON poultrypopulation.poultry_type_id = poultrytype.poultry_type_id";
+
+                        $fetch_query_run = mysqli_query($connection, $fetch_query);
+
+                        if (mysqli_num_rows($fetch_query_run) > 0) {
+                            while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $row['poultry_type_id']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $row['poultry_type_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo number_format($row['count'], 0, '.', ','); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $row['date_updated']; ?>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button class="btn btn-update btn-success btn-sm center" data-toggle="modal"
+                                            data-target="#updateModal" data-id="<?php echo $row['poultry_type_id']; ?>"
+                                            data-type="<?php echo $row['poultry_type_name']; ?>"
+                                            data-count="<?php echo $row['count']; ?>"
+                                            data-date="<?php echo $row['date_updated']; ?>">
+                                            Update
+                                        </button>
+
+                                    </td>
+                                    <td class="text-center">
+                                        <form action="code.php" method="post">
+                                            <input type="hidden" name="id" value="<?php echo $row['poultry_type_id']; ?>">
+                                            <!-- <button type="button" class="btn btn-danger btn-delete btn-sm" data-toggle="modal"
+                                                data-target="#deleteConfirmationModal">Delete</button> -->
+                                            <a data-toggle="modal" href="#deleteConfirmationModal"
+                                                class="btn btn-danger btn-sm">Delete</a>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php
+                                $totalCount += $row['count'];
+                            }
+                        } else {
+                            ?>
+                            <tr>
+                                <td colspan="6">No Record Available</td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation -->
+<div class="modal" id="myModal2" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">2nd Modal title</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="container"></div>
+            <div class="modal-body">
+                Content for the dialog / modal goes here.
+                Content for the dialog / modal goes here.
+                Content for the dialog / modal goes here.
+                Content for the dialog / modal goes here.
+                Content for the dialog / modal goes here.
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+                <a href="#" class="btn btn-primary">Save changes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal:nth-of-type(even) {
+        z-index: 1052 !important;
+    }
+
+    .modal-backdrop.show:nth-of-type(even) {
+        z-index: 1051 !important;
+    }
+</style>
+
+
+<script>
+    $zindex - dropdown: 1000;
+    $zindex - sticky: 1020;
+    $zindex - fixed: 1030;
+    $zindex - modal - backdrop: 1040;
+    $zindex - offcanvas: 1050;
+    $zindex - modal: 1060;
+    $zindex - popover: 1070;
+    $zindex - tooltip: 1080;
+
+
+</script>

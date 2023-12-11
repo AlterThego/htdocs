@@ -1,246 +1,263 @@
 <?php
 session_start();
-include('includes/header.php');
+
 ?>
 
+<!doctype html>
+<html lang="en">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">School Record</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Enrollment/index.php">Enrollment <span
-                        class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Student/index.php">Student Record</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Courses/index.php">Courses</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/StudentRecord/Instructor/index.php">Instructors</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Source Code</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<!-- ADD MODAL -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Instructor Record</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="code.php" method="POST">
-                <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="instructor_id">Instructor ID</label>
-                        <input type="number" class="form-control" name="instructor_id" placeholder="Enter instructor ID"
-                            autocomplete="off">
-                    </div>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
 
-                    <div class="form-group mb-3">
-                        <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" name="first_name" placeholder="Enter first name"
-                            autocomplete="off">
-                    </div>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <title>Instructor</title>
+</head>
 
-                    <div class="form-group mb-3">
-                        <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" placeholder="Enter last name"
-                            autocomplete="off">
-                    </div>
+<body>
 
-                    <div class="form-group mb-3">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" name="email" placeholder="Enter email"
-                            autocomplete="off">
-                    </div>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">School Record</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <div class="form-group mb-3">
-                        <label for="phone">Phone Number</label>
-                        <input type="text" class="form-control" name="phone" placeholder="Enter phone"
-                            autocomplete="off">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="save_instructor" class="btn btn-primary">Save Record</button>
-                </div>
-            </form>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Enrollment/index.php">Enrollment <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Student/index.php">Student Record</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Courses/index.php">Courses</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/StudentRecord/Instructor/index.php">Instructors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/User/details.php">Account</a>
+                </li>
+            </ul>
         </div>
-    </div>
-</div>
+    </nav>
 
-<!-- TABLE -->
-<div class="container-fluid mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <?php
-            if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-                ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Result: </strong>
-                    <?php echo $_SESSION['status']; ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <!-- ADD MODAL -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Instructor Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form action="code.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label for="instructor_id">Instructor ID</label>
+                            <input type="number" class="form-control" name="instructor_id"
+                                placeholder="Enter instructor ID" autocomplete="off">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" name="first_name" placeholder="Enter first name"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" placeholder="Enter last name"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter email"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" class="form-control" name="phone" placeholder="Enter phone"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="save_instructor" class="btn btn-primary">Save Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <?php
-                unset($_SESSION['status']);
-            }
-            ?>
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="text-center">Instructors</h4>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Add Instructor
-                    </button>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Instructor ID</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Update</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $connection = mysqli_connect("localhost", "root", "", "studentrecord");
+                if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                    ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Result: </strong>
+                        <?php echo $_SESSION['status']; ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php
+                    unset($_SESSION['status']);
+                }
+                ?>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center">Instructors</h4>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Add Instructor
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table id="instructorTable" class="display table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Instructor ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Update</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $connection = mysqli_connect("localhost", "root", "", "studentrecord");
 
-                            $fetch_query = "SELECT * FROM instructor";
-                            $fetch_query_run = mysqli_query($connection, $fetch_query);
+                                $fetch_query = "SELECT * FROM instructor";
+                                $fetch_query_run = mysqli_query($connection, $fetch_query);
 
-                            if (mysqli_num_rows($fetch_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                if (mysqli_num_rows($fetch_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo $row['InstructorID']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['FirstName']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['LastName']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['Email']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['Phone']; ?>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-sm btn-update"
+                                                    data-="<?php echo $row['InstructorID']; ?>"
+                                                    data-first-name="<?php echo $row['FirstName']; ?>"
+                                                    data-last-name="<?php echo $row['LastName']; ?>"
+                                                    data-email="<?php echo $row['Email']; ?>"
+                                                    data-phone="<?php echo $row['Phone']; ?>">
+                                                    Update
+                                                </button>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm btn-delete"
+                                                    data-instructor-id="<?php echo $row['InstructorID']; ?>" data-toggle="modal"
+                                                    data-target="#deleteConfirmationModal">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
                                     ?>
-                                    <tr>
-                                        <td>
-                                            <?php echo $row['InstructorID']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['FirstName']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['LastName']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['Email']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['Phone']; ?>
-                                        </td>
-
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-sm btn-update"
-                                                data-instructor-id="<?php echo $row['InstructorID']; ?>"
-                                                data-first-name="<?php echo $row['FirstName']; ?>"
-                                                data-last-name="<?php echo $row['LastName']; ?>"
-                                                data-email="<?php echo $row['Email']; ?>"
-                                                data-phone="<?php echo $row['Phone']; ?>">
-                                                Update
-                                            </button>
-                                        </td>
-
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm btn-delete"
-                                                data-instructor-id="<?php echo $row['InstructorID']; ?>" data-toggle="modal"
-                                                data-target="#deleteConfirmationModal">
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <tr colspan="8">No Record Available</tr>
                                     <?php
                                 }
-                            } else {
                                 ?>
-                                <tr colspan="8">No Record Available</tr>
-                                <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- UPDATE MODAL -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Instructor Record</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- UPDATE MODAL -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Instructor Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="code.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label for="update_instructor_id">Instructor ID</label>
+                            <input type="text" class="form-control" name="update_instructor_id"
+                                id="update_instructor_id" placeholder="Enter instructor ID" readonly>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_first_name">First Name</label>
+                            <input type="text" class="form-control" name="update_first_name" id="update_first_name"
+                                placeholder="Enter first name">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_last_name">Last Name</label>
+                            <input type="text" class="form-control" name="update_last_name" id="update_last_name"
+                                placeholder="Enter last name">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_email">Email address</label>
+                            <input type="email" class="form-control" name="update_email" id="update_email"
+                                placeholder="Enter email">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_phone">Phone Number</label>
+                            <input type="text" class="form-control" name="update_phone" id="update_phone"
+                                placeholder="Enter phone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="update_instructor" class="btn btn-primary">Update Record</button>
+                    </div>
+                </form>
             </div>
-            <form action="code.php" method="POST">
-                <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="update_instructor_id">Instructor ID</label>
-                        <input type="text" class="form-control" name="update_instructor_id" id="update_instructor_id"
-                            placeholder="Enter instructor ID" readonly>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_first_name">First Name</label>
-                        <input type="text" class="form-control" name="update_first_name" id="update_first_name"
-                            placeholder="Enter first name">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_last_name">Last Name</label>
-                        <input type="text" class="form-control" name="update_last_name" id="update_last_name"
-                            placeholder="Enter last name">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_email">Email address</label>
-                        <input type="email" class="form-control" name="update_email" id="update_email"
-                            placeholder="Enter email">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_phone">Phone Number</label>
-                        <input type="text" class="form-control" name="update_phone" id="update_phone"
-                            placeholder="Enter phone">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="update_instructor" class="btn btn-primary">Update Record</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
+</body>
 
 <!-- DELETE MODAL -->
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
@@ -302,4 +319,14 @@ include('includes/header.php');
     });
 </script>
 
-<?php include('includes/footer.php'); ?>
+<script>
+    $(document).ready(function () {
+        $('#instructorTable').DataTable();
+    });
+</script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+</html>

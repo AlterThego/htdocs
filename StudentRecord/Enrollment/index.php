@@ -1,317 +1,337 @@
 <?php
 session_start();
-include('includes/header.php');
-
-
 ?>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">School Record</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<!doctype html>
+<html lang="en">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/StudentRecord/Enrollment/index.php">Enrollment <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Student/index.php">Student Record</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Courses/index.php">Courses</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StudentRecord/Instructor/index.php">Instructors</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Source Code</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- MODAL FOR ADD ENROLLMENT -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enrollment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="code.php" method="POST">
-                <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="student_id">Student ID</label>
-                        <select class="form-control" name="student_id" >
-                            <?php
-                            $connection = mysqli_connect("localhost", "root", "", "studentrecord");
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-                            $fetch_students_query = "SELECT StudentID, LastName FROM student";
-                            $fetch_students_query_run = mysqli_query($connection, $fetch_students_query);
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-                            if (mysqli_num_rows($fetch_students_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_students_query_run)) {
-                                    echo "<option value='" . $row['StudentID'] . "'>" . $row['StudentID'] . " - " . $row['LastName'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
 
-                    <div class="form-group mb-3">
-                        <label for="course_id">Course</label>
-                        <select class="form-control" name="course_id">
-                            <?php
-                            $fetch_courses_query = "SELECT CourseID, CourseName FROM course";
-                            $fetch_courses_query_run = mysqli_query($connection, $fetch_courses_query);
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 
-                            if (mysqli_num_rows($fetch_courses_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_courses_query_run)) {
-                                    echo "<option value='" . $row['CourseID'] . "'>" . $row['CourseID'] . " - " . $row['CourseName'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
 
-                    <div class="form-group mb-3">
-                        <label for="enrollment_date">Enrollment Date</label>
-                        <input type="date" class="form-control" name="enrollment_date">
-                    </div>
 
-                    <div class="form-group mb-3">
-                        <label for="grade">Grade</label>
-                        <input type="text" class="form-control" name="grade" placeholder="Enter grade" autocomplete="off">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="save_enrollment" class="btn btn-primary">Save Record</button>
-                </div>
-            </form>
+    <title>Enrollment</title>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">School Record</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/StudentRecord/Enrollment/index.php">Enrollment <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Student/index.php">Student Record</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Courses/index.php">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/Instructor/index.php">Instructors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/StudentRecord/User/details.php">Account</a>
+                </li>
+            </ul>
         </div>
-    </div>
-</div>
+    </nav>
 
-<!-- TABLES -->
-<div class="container-fluid mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <?php
-            if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-                ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Result: </strong>
-                    <?php echo $_SESSION['status']; ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <!-- MODAL FOR ADD ENROLLMENT -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enrollment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form action="code.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label for="student_id">Student ID</label>
+                            <select class="form-control" name="student_id">
+                                <?php
+                                $connection = mysqli_connect("localhost", "root", "", "studentrecord");
+
+                                $fetch_students_query = "SELECT StudentID, LastName FROM student";
+                                $fetch_students_query_run = mysqli_query($connection, $fetch_students_query);
+
+                                if (mysqli_num_rows($fetch_students_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_students_query_run)) {
+                                        echo "<option value='" . $row['StudentID'] . "'>" . $row['StudentID'] . " - " . $row['LastName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="course_id">Course</label>
+                            <select class="form-control" name="course_id">
+                                <?php
+                                $fetch_courses_query = "SELECT CourseID, CourseName FROM course";
+                                $fetch_courses_query_run = mysqli_query($connection, $fetch_courses_query);
+
+                                if (mysqli_num_rows($fetch_courses_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_courses_query_run)) {
+                                        echo "<option value='" . $row['CourseID'] . "'>" . $row['CourseID'] . " - " . $row['CourseName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="enrollment_date">Enrollment Date</label>
+                            <input type="date" class="form-control" name="enrollment_date">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="grade">Grade</label>
+                            <input type="text" class="form-control" name="grade" placeholder="Enter grade"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="save_enrollment" class="btn btn-primary">Save Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLES -->
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <?php
-                unset($_SESSION['status']);
-            }
-            ?>
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="text-center">Enrollment Record</h4>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Add Enrollment Record
-                    </button>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Enrollment ID</th>
-                                <th scope="col">Student ID</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Course ID</th>
-                                <th scope="col">Enrollment Date</th>
-                                <th scope="col">Grade</th>
-                                <th scope="col">Update</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $connection = mysqli_connect("localhost", "root", "", "studentrecord");
+                if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                    ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Status: </strong>
+                        <?php echo $_SESSION['status']; ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php
+                    unset($_SESSION['status']);
+                }
+                ?>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center">Enrollment Record</h4>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Add Enrollment Record
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table id="enrollmentTable" class="display table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Enrollment ID</th>
+                                    <th scope="col">Student ID</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Course ID</th>
+                                    <th scope="col">Enrollment Date</th>
+                                    <th scope="col">Grade</th>
+                                    <th scope="col">Update</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $connection = mysqli_connect("localhost", "root", "", "studentrecord");
 
-                            $fetch_query = "SELECT enrollment.EnrollmentID, enrollment.StudentID, student.LastName, enrollment.CourseID, enrollment.EnrollmentDate, enrollment.Grade FROM enrollment JOIN student ON enrollment.StudentID = student.StudentID";
-                            $fetch_query_run = mysqli_query($connection, $fetch_query);
+                                $fetch_query = "SELECT enrollment.EnrollmentID, enrollment.StudentID, student.LastName, enrollment.CourseID, enrollment.EnrollmentDate, enrollment.Grade FROM enrollment JOIN student ON enrollment.StudentID = student.StudentID";
+                                $fetch_query_run = mysqli_query($connection, $fetch_query);
 
 
 
-                            $fetch_query_run = mysqli_query($connection, $fetch_query);
+                                $fetch_query_run = mysqli_query($connection, $fetch_query);
 
-                            if (mysqli_num_rows($fetch_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                if (mysqli_num_rows($fetch_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo $row['EnrollmentID']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['StudentID']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?php echo $row['LastName']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['CourseID']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['EnrollmentDate']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['Grade']; ?>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-sm btn-update"
+                                                    data-enrollment-id="<?php echo $row['EnrollmentID']; ?>"
+                                                    data-student-id="<?php echo $row['StudentID']; ?>"
+                                                    data-last-name="<?php echo $row['LastName']; ?>"
+                                                    data-course-id="<?php echo $row['CourseID']; ?>"
+                                                    data-enrollment-date="<?php echo $row['EnrollmentDate']; ?>"
+                                                    data-grade="<?php echo $row['Grade']; ?>">
+                                                    Update
+                                                </button>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm btn-delete"
+                                                    data-enrollment-id="<?php echo $row['EnrollmentID']; ?>" data-toggle="modal"
+                                                    data-target="#deleteConfirmationModal">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
                                     ?>
-                                    <tr>
-                                        <td>
-                                            <?php echo $row['EnrollmentID']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['StudentID']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?php echo $row['LastName']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['CourseID']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['EnrollmentDate']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['Grade']; ?>
-                                        </td>
-
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-sm btn-update"
-                                                data-enrollment-id="<?php echo $row['EnrollmentID']; ?>"
-                                                data-student-id="<?php echo $row['StudentID']; ?>"
-                                                data-last-name="<?php echo $row['LastName']; ?>"
-                                                data-course-id="<?php echo $row['CourseID']; ?>"
-                                                data-enrollment-date="<?php echo $row['EnrollmentDate']; ?>"
-                                                data-grade="<?php echo $row['Grade']; ?>">
-                                                Update
-                                            </button>
-                                        </td>
-
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm btn-delete"
-                                                data-enrollment-id="<?php echo $row['EnrollmentID']; ?>" data-toggle="modal"
-                                                data-target="#deleteConfirmationModal">
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <tr colspan="8">No Record Available</tr>
                                     <?php
                                 }
-                            } else {
                                 ?>
-                                <tr colspan="8">No Record Available</tr>
-                                <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- UPDATE MODAL -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Enrollment Record</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- UPDATE MODAL -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Enrollment Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="code.php" method="POST">
+                    <div class="modal-body">
+                        <!-- Keep the structure similar to the Add Enrollment modal -->
+                        <div class="form-group mb-3">
+                            <label for="update_enrollment_id">Enrollment ID</label>
+                            <input type="text" class="form-control" name="update_enrollment_id"
+                                id="update_enrollment_id" placeholder="Enter enrollment ID" readonly>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="student_id">Student ID</label>
+                            <select class="form-control" name="student_id" disabled>
+                                <?php
+                                $connection = mysqli_connect("localhost", "root", "", "studentrecord");
+
+                                $fetch_students_query = "SELECT StudentID, LastName FROM student";
+                                $fetch_students_query_run = mysqli_query($connection, $fetch_students_query);
+
+                                if (mysqli_num_rows($fetch_students_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_students_query_run)) {
+                                        echo "<option value='" . $row['StudentID'] . "'>" . $row['StudentID'] . " - " . $row['LastName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="course_id">Course</label>
+                            <select class="form-control" name="course_id" disabled>
+                                <?php
+                                $fetch_courses_query = "SELECT CourseID, CourseName FROM course";
+                                $fetch_courses_query_run = mysqli_query($connection, $fetch_courses_query);
+
+                                if (mysqli_num_rows($fetch_courses_query_run) > 0) {
+                                    while ($row = mysqli_fetch_array($fetch_courses_query_run)) {
+                                        echo "<option value='" . $row['CourseID'] . "'>" . $row['CourseID'] . " - " . $row['CourseName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_enrollment_date">Enrollment Date</label>
+                            <input type="date" class="form-control" name="update_enrollment_date"
+                                id="update_enrollment_date">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="update_grade">Grade</label>
+                            <input type="text" class="form-control" name="update_grade" id="update_grade"
+                                placeholder="Enter grade" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="update_enrollment" class="btn btn-primary">Update
+                            Record</button>
+                    </div>
+                </form>
             </div>
-            <form action="code.php" method="POST">
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE MODAL -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+        aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
-                    <!-- Keep the structure similar to the Add Enrollment modal -->
-                    <div class="form-group mb-3">
-                        <label for="update_enrollment_id">Enrollment ID</label>
-                        <input type="text" class="form-control" name="update_enrollment_id" id="update_enrollment_id"
-                            placeholder="Enter enrollment ID" readonly>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="student_id">Student ID</label>
-                        <select class="form-control" name="student_id" disabled>
-                            <?php
-                            $connection = mysqli_connect("localhost", "root", "", "studentrecord");
-
-                            $fetch_students_query = "SELECT StudentID, LastName FROM student";
-                            $fetch_students_query_run = mysqli_query($connection, $fetch_students_query);
-
-                            if (mysqli_num_rows($fetch_students_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_students_query_run)) {
-                                    echo "<option value='" . $row['StudentID'] . "'>" . $row['StudentID'] . " - " . $row['LastName'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="course_id">Course</label>
-                        <select class="form-control" name="course_id" disabled>
-                            <?php
-                            $fetch_courses_query = "SELECT CourseID, CourseName FROM course";
-                            $fetch_courses_query_run = mysqli_query($connection, $fetch_courses_query);
-
-                            if (mysqli_num_rows($fetch_courses_query_run) > 0) {
-                                while ($row = mysqli_fetch_array($fetch_courses_query_run)) {
-                                    echo "<option value='" . $row['CourseID'] . "'>" . $row['CourseID'] . " - " . $row['CourseName'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_enrollment_date">Enrollment Date</label>
-                        <input type="date" class="form-control" name="update_enrollment_date"
-                            id="update_enrollment_date">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="update_grade">Grade</label>
-                        <input type="text" class="form-control" name="update_grade" id="update_grade"
-                            placeholder="Enter grade" autocomplete="off">
-                    </div>
+                    Are you sure you want to delete this data?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="update_enrollment" class="btn btn-primary">Update
-                        Record</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- CONFIRM DELETE MODAL -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
-    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this data?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
         </div>
     </div>
-</div>
 
+</body>
 <!-- SCRIPTS  -->
 <script>
     $(document).ready(function () {
@@ -359,4 +379,16 @@ include('includes/header.php');
     });
 </script>
 
-<?php include('includes/footer.php'); ?>
+<script>
+    $(document).ready(function () {
+        $('#enrollmentTable').DataTable();
+    });
+</script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+</html>

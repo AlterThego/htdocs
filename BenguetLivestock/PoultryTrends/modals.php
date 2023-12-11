@@ -28,26 +28,26 @@
 
 
                     <div class="form-group mb-3">
-                        <label for="layers_yearly">Yearly <b>Layers</b></label>
+                        <label for="layers_count">Yearly <b>Layers</b></label>
                         <input type="number" class="form-control" name="layers_count"
                             placeholder="Enter yearly layers count">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="broiler_yearly">Yearly <b>Broiler</b></label>
-                        <input type="number" class="form-control" name="broiler_yearly"
+                        <label for="broiler_count">Yearly <b>Broiler</b></label>
+                        <input type="number" class="form-control" name="broiler_count"
                             placeholder="Enter yearly broiler count">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="native_yearly">Yearly <b>Native/Range</b></label>
-                        <input type="number" class="form-control" name="native_yearly"
+                        <label for="native_count">Yearly <b>Native/Range</b></label>
+                        <input type="number" class="form-control" name="native_count"
                             placeholder="Enter yearly native count">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="fighting_yearly">Yearly <b>Fighting/Fancy Fowl</b></label>
-                        <input type="number" class="form-control" name="fighting_yearly"
+                        <label for="fighting_count">Yearly <b>Fighting/Fancy Fowl</b></label>
+                        <input type="number" class="form-control" name="fighting_count"
                             placeholder="Enter yearly fighting count">
                     </div>
 

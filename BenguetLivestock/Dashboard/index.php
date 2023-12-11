@@ -35,6 +35,7 @@
             </nav>
 
             <main class="content px-3 py-3">
+                <button id="exportButton" class="btn btn-primary mt-3 mb-3">Export Data to CSV</button>
                 <!-- Main Table -->
                 <div style="width: 100%;" class="mr-2">
                     <div class="row justify-content-center">
@@ -203,7 +204,19 @@
     <script src="../sidebarFunctionality.js"></script>
 
     <script>
-        
+        document.getElementById('exportButton').addEventListener('click', function () {
+            // Send an AJAX request to the PHP script that exports data to CSV
+            $.ajax({
+                url: 'export.php', // replace with the actual filename of your PHP script
+                method: 'POST',
+                success: function (response) {
+                    alert(response); // display a message or handle the response as needed
+                },
+                error: function (error) {
+                    console.error('Error exporting data:', error);
+                }
+            });
+        });
     </script>
 
 </body>

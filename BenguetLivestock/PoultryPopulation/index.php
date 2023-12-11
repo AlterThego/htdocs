@@ -70,8 +70,10 @@ session_start();
                                         data-target="#exampleModal">
                                         Add data
                                     </button>
+                                    <a data-toggle="modal" href="#advancedOptionModal"
+                                        class="btn btn-warning float-end">Advanced Options</a>
                                 </div>
-                                
+
                                 <table class="display table-bordered" id="main-table">
                                     <thead class="thead-light">
                                         <tr>
@@ -152,6 +154,7 @@ session_start();
                                 <strong>Total Count:</strong>
                                 <?php echo number_format($totalCount, 0, '.', ' '); ?>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -164,6 +167,19 @@ session_start();
 
     <script>
         var dataTable = new DataTable('#main-table', {
+            lengthChange: false,
+            columnDefs: [
+                { targets: [4, 5], orderable: false } // Disable sorting for columns with index 4 (Update) and 5 (Delete)
+            ],
+            autoWidth: false,
+            search: true,
+            // info: false,
+            paging: false,
+        });
+    </script>
+
+    <script>
+        var dataTable = new DataTable('#advanced-table', {
             lengthChange: false,
             columnDefs: [
                 { targets: [4, 5], orderable: false } // Disable sorting for columns with index 4 (Update) and 5 (Delete)

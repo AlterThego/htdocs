@@ -56,8 +56,8 @@
 
                     <li class="sidebar-item">
                         <a href="../LivestockVolume/index.php" class="sidebar-link" data-bs-parent="#population"><img
-                                src="/BenguetLivestock/images/weight.png" alt="Logo"
-                                style="height: 20px; width: 20px;" class="img mr-2 ml-4">Livestock Volume</a>
+                                src="/BenguetLivestock/images/weight.png" alt="Logo" style="height: 20px; width: 20px;"
+                                class="img mr-2 ml-4">Livestock Volume</a>
                     </li>
                 </ul>
             </li>
@@ -71,17 +71,18 @@
                 </a>
                 <ul id="farms" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"><img src="/BenguetLivestock/images/breeding_stations.png"
-                                alt="Logo" style="height: 20px; width: 20px;" class="img mr-2 ml-4">Breeding
+                        <a href="/BenguetLivestock/BreedingStations/index.php" class="sidebar-link"><img
+                                src="/BenguetLivestock/images/breeding_stations.png" alt="Logo"
+                                style="height: 20px; width: 20px;" class="img mr-2 ml-4">Breeding
                             Stations/Multiplier Farms/Demo Farms</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"><img src="/BenguetLivestock/images/piggery_farm.png" alt="Logo"
+                        <a href="/BenguetLivestock/CommercialPoultry/index.php" class="sidebar-link"><img src="/BenguetLivestock/images/piggery_farm.png" alt="Logo"
                                 style="height: 20px; width: 20px;" class="img mr-2 ml-4">Commercial Poultry,
                             Cattle, and Piggery Farms</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"><img src="/BenguetLivestock/images/farm_supplies.png"
+                        <a href="/BenguetLivestock/VeterinaryPoultry/index.php" class="sidebar-link"><img src="/BenguetLivestock/images/farm_supplies.png"
                                 alt="Logo" style="height: 20px; width: 20px;" class="img mr-2 ml-4">Number of Veterinary
                             and Poultry Farm Supplies</a>
                     </li>
