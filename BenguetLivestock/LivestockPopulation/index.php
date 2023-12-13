@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+ini_set('log_errors', 1);
+ini_set('error_log', '/benguetlivestock/error.log');
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +25,10 @@ session_start();
     <!-- DataTables JS -->
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <!-- Export Buttons css -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
 
 
@@ -96,8 +103,17 @@ session_start();
 
                                         $fetch_query_run = mysqli_query($connection, $fetch_query);
 
+                                        $totalCarabao = $totalCattle = $totalSwine = $totalGoat = $totalDog = $totalSheep = $totalHorse = 0;
+
                                         if (mysqli_num_rows($fetch_query_run) > 0) {
                                             while ($row = mysqli_fetch_array($fetch_query_run)) {
+                                                $totalCarabao += $row['carabao_count'];
+                                                $totalCattle += $row['cattle_count'];
+                                                $totalSwine += $row['swine_count'];
+                                                $totalGoat += $row['goat_count'];
+                                                $totalDog += $row['dog_count'];
+                                                $totalSheep += $row['sheep_count'];
+                                                $totalHorse += $row['horse_count'];
                                                 ?>
                                                 <tr>
                                                     <td>
@@ -159,21 +175,66 @@ session_start();
                                                         </form>
                                                     </td>
                                                 </tr>
+
+
+
                                                 <?php
                                             }
-                                        } else {
-                                            ?>
-                                            <tr>
-                                                <td colspan="6">No Record Available</td>
-                                            </tr>
-                                            <?php
                                         }
+
                                         ?>
+
                                     </tbody>
 
+                                    <tr class="total-row text-center" style="font-weight: bold; color: red;">
+                                        <td>Total</td>
+                                        <td></td> <!-- You may leave the Municipality cell empty for the total row -->
+                                        <td>
+                                            <?php echo number_format($totalCarabao, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalCattle, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalSwine, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalGoat, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalDog, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalSheep, 0, '.', ','); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo number_format($totalHorse, 0, '.', ','); ?>
+                                        </td>
+                                        <td></td> <!-- You may leave the Date Updated cell empty for the total row -->
+                                        <td colspan="2"></td>
+                                        <!-- You may leave the Update and Delete cells empty for the total row -->
+                                    </tr>
+
+
+
                                 </table>
+                                <div class="right">
+                                    <button class="btn btn-info float-right" onclick="submitTotalModal()"
+                                        data-toggle="modal" data-target="#submitTotalModal">Submit Total Count
+                                    </button>
+                                </div>
+
+
+
+
+
                             </div>
+
+
+
+
                         </div>
+
                     </div>
                 </div>
             </main>
@@ -207,13 +268,86 @@ session_start();
             search: true,
             // info: false,
             paging: false,
+            order: [[1, 'asc']],
+
         });
+
     </script>
 
 
 
 
+    <script>
+        var totalCarabao = <?php echo $totalCarabao; ?>;
+        var totalCattle = <?php echo $totalCattle; ?>;
+        var totalSwine = <?php echo $totalSwine; ?>;
+        var totalGoat = <?php echo $totalGoat; ?>;
+        var totalDog = <?php echo $totalDog; ?>;
+        var totalSheep = <?php echo $totalSheep; ?>;
+        var totalHorse = <?php echo $totalHorse; ?>;
+    </script>
 
+    <script>
+        // Function to calculate and update totals in the modal
+        function submitTotalModal() {
+            <?php
+            // Assuming these variables are already defined in your PHP code
+            echo "var totalCarabao = $totalCarabao;\n";
+            echo "var totalCattle = $totalCattle;\n";
+            echo "var totalSwine = $totalSwine;\n";
+            echo "var totalGoat = $totalGoat;\n";
+            echo "var totalDog = $totalDog;\n";
+            echo "var totalSheep = $totalSheep;\n";
+            echo "var totalHorse = $totalHorse;\n";
+            ?>
+
+            // Update the modal content
+            document.getElementById('totalTableBody').innerHTML = `
+    <tr>
+        <td>Carabao</td>
+        <td>${totalCarabao}</td>
+    </tr>
+    <tr>
+        <td>Cattle</td>
+        <td>${totalCattle}</td>
+    </tr>
+    <tr>
+        <td>Swine</td>
+        <td>${totalSwine}</td>
+    </tr>
+    <tr>
+        <td>Goat</td>
+        <td>${totalGoat}</td>
+    </tr>
+    <tr>
+        <td>Dog</td>
+        <td>${totalDog}</td>
+    </tr>
+    <tr>
+        <td>Sheep</td>
+        <td>${totalSheep}</td>
+    </tr>
+    <tr>
+        <td>Horse</td>
+        <td>${totalHorse}</td>
+    </tr>
+        `;
+        }
+    </script>
+
+
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.3/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.3/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.3/js/buttons.print.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.3/js/buttons.colVis.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -226,7 +360,7 @@ session_start();
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
 
 
     <!-- JS for Update and Delete 'script.js'-->

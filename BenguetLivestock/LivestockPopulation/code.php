@@ -2,6 +2,9 @@
 session_start();
 $connection = mysqli_connect("localhost", "root", "", "benguetlivestockdb");
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -11,6 +14,7 @@ if (isset($_POST['savedata'])) {
     $combined_value = $connection->real_escape_string($_POST['zip']);
     list($municipality_id, $municipality_name) = explode('-', $combined_value);
 
+    $livestock_year = $connection->real_escape_string($_POST['livestock_year']);
     $carabao_count = $connection->real_escape_string($_POST['carabao_count']);
     $cattle_count = $connection->real_escape_string($_POST['cattle_count']);
     $swine_count = $connection->real_escape_string($_POST['swine_count']);
@@ -21,9 +25,9 @@ if (isset($_POST['savedata'])) {
     $date_updated = $connection->real_escape_string($_POST['date_updated']);
 
     try {
-        $insert_query = "INSERT INTO livestockpopulation (municipality_id, municipality_name, carabao_count, cattle_count, 
+        $insert_query = "INSERT INTO livestockpopulation (municipality_id, municipality_name, livestock_year, carabao_count, cattle_count, 
         swine_count, goat_count, dog_count, sheep_count, horse_count, date_updated) 
-        VALUES ('$municipality_id', '$municipality_name', '$carabao_count', '$cattle_count', '$swine_count', '$goat_count',
+        VALUES ('$municipality_id','$municipality_name', '$livestock_year', '$carabao_count', '$cattle_count', '$swine_count', '$goat_count',
         '$dog_count', '$sheep_count', '$horse_count', '$date_updated')";
 
         // Execute the query
@@ -79,7 +83,43 @@ if (isset($_POST['savedata'])) {
         $_SESSION['status'] = 'Failed to Delete: ' . mysqli_error($connection);
         exit(); // Stop further execution
     }
+} elseif (isset($_POST['submitData'])) {
+    try {
+        // Update variables with values from the form submission
+        $Carabao = isset($_POST['totalCarabao']) ? $_POST['totalCarabao'] : 0;
+        $Cattle = isset($_POST['totalCattle']) ? $_POST['totalCattle'] : 0;
+        $Swine = isset($_POST['totalSwine']) ? $_POST['totalSwine'] : 0;
+        $Goat = isset($_POST['totalGoat']) ? $_POST['totalGoat'] : 0;
+        $Dog = isset($_POST['totalDog']) ? $_POST['totalDog'] : 0;
+        $Sheep = isset($_POST['totalSheep']) ? $_POST['totalSheep'] : 0;
+        $Horse = isset($_POST['totalHorse']) ? $_POST['totalHorse'] : 0;
+
+        $livestockYear = isset($_POST['livestockYear']) ? $_POST['livestockYear'] : 0;
+        $submitDateUpdated = isset($_POST['submitDateUpdated']) ? $_POST['submitDateUpdated'] : date('Y-m-d');
+
+        // Perform the database insertion using prepared statements to prevent SQL injection
+        $insertQuery = "INSERT INTO livestocktrend (livestock_year, carabao_count, cattle_count, swine_count, goat_count, dog_count, sheep_count, horse_count, date_updated) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = mysqli_prepare($connection, $insertQuery);
+        mysqli_stmt_bind_param($stmt, "iiiiiiiss", $livestockYear, $Carabao, $Cattle, $Swine, $Goat, $Dog, $Sheep, $Horse, $submitDateUpdated);
+
+        if (mysqli_stmt_execute($stmt)) {
+            session_start();
+            $_SESSION['status'] = 'Total Count Submitted Successfully';
+            header('location: index.php');
+            exit();
+        } else {
+            throw new Exception('Failed to execute the database insertion');
+        }
+    } catch (Exception $e) {
+        session_start();
+        $_SESSION['status'] = 'Failed: Year Already Exists!! '; //. $e->getMessage()
+        header('location: index.php');
+        exit();
+    }
 }
+
 
 mysqli_close($connection);
 ?>

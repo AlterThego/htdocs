@@ -201,3 +201,57 @@
         </div>
     </div>
 </div>
+
+<!-- Submit -->
+<div class="modal fade" id="submitTotalModal" tabindex="-1" role="dialog" aria-labelledby="submitTotalModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showTotalModalLabel">Total Count</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="code.php">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="livestockYear">Livestock Year</label>
+                        <input type="number" class="form-control" name="livestockYear" value="<?php echo date('Y'); ?>"
+                            min="1900" max="<?php echo date('Y'); ?>" required>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <tbody id="totalTableBody">
+
+                        </tbody>
+
+                        <tfoot>
+                            <input type="hidden" name="totalCarabao" value="<?php echo $totalCarabao; ?>">
+                            <input type="hidden" name="totalCattle" value="<?php echo $totalCattle; ?>">
+                            <input type="hidden" name="totalSwine" value="<?php echo $totalSwine; ?>">
+                            <input type="hidden" name="totalGoat" value="<?php echo $totalGoat; ?>">
+                            <input type="hidden" name="totalDog" value="<?php echo $totalDog; ?>">
+                            <input type="hidden" name="totalSheep" value="<?php echo $totalSheep; ?>">
+                            <input type="hidden" name="totalHorse" value="<?php echo $totalHorse; ?>">
+                        </tfoot>
+                    </table>
+
+                    <div class="form-group mb-3">
+                        <label for="submitDateUpdated">Date Updated</label>
+                        <input type="date" class="form-control" name="submitDateUpdated" id="submitDateUpdated"
+                            value="<?php echo date('Y-m-d'); ?>" required>
+                    </div>
+
+                    <h6>
+                        Make sure the data is correct before submitting!
+                    </h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submitData" class="btn btn-warning">Submit Total Count</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

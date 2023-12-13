@@ -82,7 +82,7 @@ session_start();
                                             <th scope="col">Dog</th>
                                             <th scope="col">Sheep</th>
                                             <th scope="col">Horse</th>
-                                            <th scope="col">Total</th>
+                                            <th scope="col" style="color: red;">Total</th>
                                             <th scope="col">Date Updated</th>
                                             <th class="text-center" scope="col">Update</th>
                                             <th class="text-center" scope="col">Delete</th>
@@ -124,7 +124,7 @@ session_start();
                                                     <td>
                                                         <?php echo number_format($row['horse_count'], 0, '.', ','); ?>
                                                     </td>
-                                                    <td>
+                                                    <td style="color: red; font-weight:bold;">
                                                         <!-- Total of layers, broiler, native, and fighting -->
                                                         <?php
                                                         $total = $row['carabao_count'] + $row['cattle_count'] + $row['swine_count'] + $row['goat_count']
@@ -137,7 +137,7 @@ session_start();
                                                         <?php echo $row['date_updated']; ?>
                                                     </td>
 
-                                                    <td class="text-center">
+                                                    <td class=" text-center">
                                                         <button class="btn btn-update btn-success btn-sm center"
                                                             data-toggle="modal" data-target="#updateModal"
                                                             data-year="<?php echo $row['livestock_year']; ?>"

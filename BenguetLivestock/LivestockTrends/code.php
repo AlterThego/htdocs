@@ -9,13 +9,13 @@ if (!$connection) {
 if (isset($_POST['savedata'])) {
     // Insert new data
     $year = $connection->real_escape_string($_POST['year']);
-    $carabao = $connection->real_escape_string($_POST['yearly_carabao']);
-    $cattle = $connection->real_escape_string($_POST['yearly_cattle']);
-    $swine = $connection->real_escape_string($_POST['yearly_swine']);
-    $goat = $connection->real_escape_string($_POST['yearly_goat']);
-    $dog = $connection->real_escape_string($_POST['yerly_dog']);
-    $sheep = $connection->real_escape_string($_POST['yearly_sheep']);
-    $horse = $connection->real_escape_string($_POST['yearly_horse']);
+    $carabao = $connection->real_escape_string($_POST['carabao_yearly']);
+    $cattle = $connection->real_escape_string($_POST['cattle_yearly']);
+    $swine = $connection->real_escape_string($_POST['swine_yearly']);
+    $goat = $connection->real_escape_string($_POST['goat_yearly']);
+    $dog = $connection->real_escape_string($_POST['dog_yearly']);
+    $sheep = $connection->real_escape_string($_POST['sheep_yearly']);
+    $horse = $connection->real_escape_string($_POST['horse_yearly']);
     $date_updated = $connection->real_escape_string($_POST['date_updated']);
 
     try {
